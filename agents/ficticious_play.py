@@ -23,7 +23,7 @@ class FicticiousPlayAgent(Agent):
         return self.actions[best_move]
 
     def update(self, a_other, utility):
-        #a_other = a_other[0]
+        a_other = a_other[0]
         move_decode = {'rock': 0, 'paper': 1, 'scissors': 2}
         self.action_history.append(move_decode[a_other])
 

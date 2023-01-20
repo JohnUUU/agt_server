@@ -25,10 +25,10 @@ class ExponentialAgent(Agent):
         return self.actions[best_move]
 
     def update(self, a_other, utility):
-        #a_other = a_other[0]
+        a_other = a_other[0]
         print(utility)
         move_decode = {'rock': 0, 'paper': 1, 'scissors': 2}
-        self.tot_utility[move_decode[a_other]] += int(utility)
+        self.tot_utility[move_decode[a_other]] += float(utility)
         self.move_count += 1
 
     def find_best_move(self):

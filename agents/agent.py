@@ -29,12 +29,13 @@ class Agent:
             action = self.get_action()
             self.client.send(action.encode())
             response = self.client.recv(1024).decode()
-            if response == 'Game Over':
+            if response[-9:] == 'Game Over':
                 break
-            elif response == 'New Game':
+            elif response[-8:] == 'New Game':
                 self.__init__(self.name)
             else:
-                opp_action, util = response.strip().split(',')
+                opp_action, util = [r.strip()
+                                    for r in response.strip().split(',')]
                 opp_action = ast.literal_eval(opp_action)
                 self.update(opp_action, util)
         self.close()

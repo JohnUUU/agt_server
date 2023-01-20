@@ -21,13 +21,14 @@ class Server:
         self.wins = {i: 0 for i in range(n_players)}
         self.wins[3] = 0
         self.clients = defaultdict(lambda: None)
+        self.num_rounds = 5
 
     def start(self):
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         hostname = socket.gethostname()
         IPAddr = socket.gethostbyname(hostname)
-        # server.bind(('localhost', 1234))
+        #server.bind(('localhost', 1234))
         server.bind((IPAddr, 1234))
         print(f'The server is hosted at {IPAddr} and port 1234')
         server.listen()
@@ -42,7 +43,8 @@ class Server:
             client.send('RPS'.encode())
             self.clients[i] = client
             # Start the thread
-            threading.Thread(target=self.handle_client, args=(client, i)).start()
+            threading.Thread(target=self.handle_client,
+                             args=(client, i)).start()
         print('I have 2 agents connected')
 
     def handle_client(self, client, player_num):
@@ -51,10 +53,11 @@ class Server:
             opp = 1
         else:
             opp = 0
-        while rounds_played < 5:
+        while rounds_played < self.num_rounds:
             time.sleep(.2)
             # Wait for the agent to send its action
-            self.actions[player_num][rounds_played] = client.recv(1024).decode()
+            self.actions[player_num][rounds_played] = client.recv(
+                1024).decode()
             # Check if both agents have sent their actions
             while True:
                 if self.actions[0][rounds_played] is not None and self.actions[1][rounds_played] is not None:
@@ -68,9 +71,11 @@ class Server:
                     else:
                         util = -1.
                     if player_num == 0:
-                        print(f'It is round {rounds_played}. Player 0 played {a1} and player 1 played {a2}.')
+                        print(
+                            f'It is round {rounds_played}. Player 0 played {a1} and player 1 played {a2}.')
                         self.wins[winner] += 1
-                    client.send(f'{[self.actions[opp][rounds_played]]}, {util}'.encode())
+                    client.send(
+                        f'{[self.actions[opp][rounds_played]]}, {util}'.encode())
                     rounds_played += 1
                     break
         client.send('Game Over'.encode())
