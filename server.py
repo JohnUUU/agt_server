@@ -70,7 +70,7 @@ class Server:
                     if player_num == 0:
                         print(f'It is round {rounds_played}. Player 0 played {a1} and player 1 played {a2}.')
                         self.wins[winner] += 1
-                    client.send(f'{self.actions[opp][rounds_played]}, {util}'.encode())
+                    client.send(f'{[self.actions[opp][rounds_played]]}, {util}'.encode())
                     rounds_played += 1
                     break
         client.send('Game Over'.encode())

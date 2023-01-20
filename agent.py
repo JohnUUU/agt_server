@@ -30,10 +30,11 @@ class Agent:
             response = self.client.recv(1024).decode()
             if response == 'Game Over':
                 break
-            if response == 'New Game':
+            elif response == 'New Game':
                 self.__init__(self.name)
-            opp_action, util = response.strip().split(',')
-            self.update(opp_action, util)
+            else:
+                opp_action, util = response.strip().split(',')
+                self.update(opp_action, util)
         self.close()
 
     def close(self):
