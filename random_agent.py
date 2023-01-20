@@ -1,19 +1,11 @@
 import socket
 import random
+from agent import Agent
 
 
-class Agent:
+class RandomAgent(Agent):
     def __init__(self, name):
-        self.name = name
-        self.client = None
-
-    def connect(self, ip='localhost', port=1234):
-        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client.connect(('localhost', 1234))
-        self.client.send(self.name.encode())
-        player_num = int(self.client.recv(1024).decode())
-        print(f'I am player {player_num}')
-        self.play()
+        super(RandomAgent, self).__init__(name)
 
     def get_action(self):
         return random.choice(['rock', 'paper', 'scissors'])
@@ -21,23 +13,6 @@ class Agent:
     def update(self, a_other, utility):
         return None
 
-    def play(self):
-        self.game = self.client.recv(1024).decode()
-        print(f'We are playing {self.game}')
-        while True:
-            action = self.get_action()
-            self.client.send(action.encode())
-            response = self.client.recv(1024).decode()
-            if response == 'Game Over':
-                break
-            opp_action, util = response.strip().split(',')
-            agent.update(opp_action, util)
-            self.update(opp_action, util)
-        self.close()
 
-    def close(self):
-        self.client.close()
-
-
-agent = Agent('Agent 1')
-agent.connect()
+agent = RandomAgent('Agent 1')
+agent.connect(ip='10.38.33.90', port=1234)

@@ -62,7 +62,11 @@ clients = defaultdict(lambda: None)
 # Create a socket to listen for incoming connections
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-server.bind(('localhost', 1234))
+hostname = socket.gethostname()
+IPAddr = socket.gethostbyname(hostname)
+# server.bind(('localhost', 1234))
+server.bind((IPAddr, 1234))
+print(f'The server is hosted at {IPAddr} and port 1234')
 server.listen()
 
 # Wait for 2 agents to connect
