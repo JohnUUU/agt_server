@@ -14,15 +14,12 @@ def determine_winner(action1, action2):
         return 1
 
 
-
-
 class Server:
-    def __init__(self, n_players, util_fun):
+    def __init__(self, n_players):
         self.n_players = n_players
         self.actions = {i: [None]*1000 for i in range(n_players)}
         self.wins = {i: 0 for i in range(n_players)}
         self.wins[3] = 0
-        self.util_fun = util_fun
         self.clients = defaultdict(lambda: None)
 
     def start(self):
@@ -84,5 +81,5 @@ class Server:
         client.close()
 
 
-server = Server(2, determine_winner)
+server = Server(2)
 server.start()
