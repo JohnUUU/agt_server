@@ -1,5 +1,6 @@
 import socket
 
+
 class Agent:
     def __init__(self, name):
         self.name = name
@@ -30,7 +31,8 @@ class Agent:
             if response == 'Game Over':
                 break
             opp_action, util = response.strip().split(',')
-            self.update(opp_action, util)
+            self\
+                .update(opp_action, util)
             self.update(opp_action, util)
         self.close()
 

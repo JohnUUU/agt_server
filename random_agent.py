@@ -6,6 +6,7 @@ from agent import Agent
 class RandomAgent(Agent):
     def __init__(self, name):
         super(RandomAgent, self).__init__(name)
+        self.history = []
 
     def get_action(self):
         return random.choice(['rock', 'paper', 'scissors'])
