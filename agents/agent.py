@@ -1,4 +1,5 @@
 import socket
+import ast
 
 
 class Agent:
@@ -30,9 +31,12 @@ class Agent:
             response = self.client.recv(1024).decode()
             if response == 'Game Over':
                 break
-            opp_action, util = response.strip().split(',')
-            self.update(opp_action, util)
-            self.update(opp_action, util)
+            elif response == 'New Game':
+                self.__init__(self.name)
+            else:
+                opp_action, util = response.strip().split(',')
+                opp_action = ast.literal_eval(opp_action)
+                self.update(opp_action, util)
         self.close()
 
     def close(self):
