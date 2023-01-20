@@ -2,10 +2,10 @@ import numpy as np
 from agent import Agent
 
 
-class RandomAgent(Agent):
+class FicticiousPlayAgent(Agent):
     def __init__(self, name):
-        super(RandomAgent, self).__init__(name)
-        self.history = []
+        super(FicticiousPlayAgent, self).__init__(name)
+        self.action_history = []
 
         # ACTIONS
         self.ROCK, self.PAPER, self.SCISSOR = 0, 1, 2
@@ -23,17 +23,14 @@ class RandomAgent(Agent):
         return self.actions[best_move]
 
     def update(self, a_other, utility):
-        self.history.append(a_other)
+        #a_other = a_other[0]
+        move_decode = {'rock': 0, 'paper': 1, 'scissors': 2}
+        self.action_history.append(move_decode[a_other])
 
     def predict(self):
         self.dist = np.array([0, 0, 0])
-        for action in self.history:
-            if action == 'rock':
-                self.dist[self.ROCK] += 1
-            elif action == 'paper':
-                self.dist[self.PAPER] += 1
-            else:
-                self.dist[self.SCISSOR] += 1
+        for action in self.action_history:
+            self.dist[action] += 1
         total = np.sum(self.dist)
         if total > 0:
             self.dist = self.dist / total
@@ -45,6 +42,6 @@ class RandomAgent(Agent):
         return best_move
 
 
-agent = RandomAgent('Agent 1')
-# agent.connect()
-agent.connect(ip='10.38.33.90', port=1234)
+agent = FicticiousPlayAgent('Agent 1')
+agent.connect()
+# agent.connect(ip='10.38.33.90', port=1234)

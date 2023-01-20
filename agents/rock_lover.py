@@ -1,9 +1,9 @@
 from agent import Agent
 
 
-class RandomAgent(Agent):
+class RockLovingAgent(Agent):
     def __init__(self, name):
-        super(RandomAgent, self).__init__(name)
+        super(RockLovingAgent, self).__init__(name)
         self.history = []
         self.actions = ['rock', 'paper', 'scissors']
 
@@ -14,6 +14,6 @@ class RandomAgent(Agent):
         return None
 
 
-agent = RandomAgent('Agent 1')
-# agent.connect()
-agent.connect(ip='10.38.33.90', port=1234)
+agent = RockLovingAgent('Agent 1')
+agent.connect()
+#agent.connect(ip='10.38.33.90', port=1234)
