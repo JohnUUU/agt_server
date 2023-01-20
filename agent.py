@@ -1,4 +1,5 @@
 import socket
+import ast
 
 
 class Agent:
@@ -34,6 +35,7 @@ class Agent:
                 self.__init__(self.name)
             else:
                 opp_action, util = response.strip().split(',')
+                opp_action = ast.literal_eval(opp_action)
                 self.update(opp_action, util)
         self.close()
 

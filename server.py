@@ -62,11 +62,11 @@ class Server:
                     a2 = self.actions[1][rounds_played]
                     winner = determine_winner(a1, a2)
                     if winner == player_num:
-                        util = 1
+                        util = 1.
                     elif winner == 3:
-                        util = 0
+                        util = 0.
                     else:
-                        util = -1
+                        util = -1.
                     if player_num == 0:
                         print(f'It is round {rounds_played}. Player 0 played {a1} and player 1 played {a2}.')
                         self.wins[winner] += 1
