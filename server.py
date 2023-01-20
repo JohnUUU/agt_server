@@ -5,6 +5,7 @@ from collections import defaultdict
 
 # A dictionary to store the actions of the agents
 actions = {0: [None]*1000, 1: [None]*1000}
+wins = {0: 0, 1: 0, 3: 0}
 
 
 # A function to determine the winner of a round
@@ -28,16 +29,13 @@ def handle_client(client, player_num):
     while rounds_played < 5:
         time.sleep(.2)
         # Wait for the agent to send its action
-        print(f'I am here for player {player_num}')
         actions[player_num][rounds_played] = client.recv(1024).decode()
-        print(actions[player_num][rounds_played])
         # Check if both agents have sent their actions
         while True:
             if actions[0][rounds_played] is not None and actions[1][rounds_played] is not None:
                 a1 = actions[0][rounds_played]
                 a2 = actions[1][rounds_played]
                 winner = determine_winner(a1, a2)
-                print(f'The winner is {winner}')
                 if winner == player_num:
                     util = 1
                 elif winner == 3:
@@ -45,14 +43,15 @@ def handle_client(client, player_num):
                 else:
                     util = -1
                 if player_num == 0:
-                    print(f'It is round {rounds_played}. Player 1 played {a1} and player 2 played {a2}. '
-                      f'Player {winner} won')
-                print(actions[opp][rounds_played], winner)
+                    print(f'It is round {rounds_played}. Player 0 played {a1} and player 1 played {a2}.')
+                    wins[winner] += 1
                 client.send(f'{actions[opp][rounds_played]}, {util}'.encode())
                 rounds_played += 1
                 break
-    print(f'game over for player {player_num}')
     client.send('Game Over'.encode())
+    if player_num == 0:
+        print(f'Player 0 won {wins[0]} times, player 1 won {wins[1]} time, and there was {wins[3]} draws')
+
     client.close()
 
 
