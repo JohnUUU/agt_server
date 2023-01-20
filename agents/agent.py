@@ -32,6 +32,7 @@ class Agent:
                 break
             opp_action, util = response.strip().split(',')
             self.update(opp_action, util)
+            self.update(opp_action, util)
         self.close()
 
     def close(self):
