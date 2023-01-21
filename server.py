@@ -42,8 +42,7 @@ class Server:
             client.send('RPS'.encode())
             self.clients[i] = client
             # Start the thread
-            threading.Thread(target=self.handle_client,
-                             args=(client, i)).start()
+            threading.Thread(target=self.handle_client, args=(client, i)).start()
         print('I have 2 agents connected')
 
     def handle_client(self, client, player_num):
@@ -55,8 +54,7 @@ class Server:
         while rounds_played < 5:
             time.sleep(.2)
             # Wait for the agent to send its action
-            self.actions[player_num][rounds_played] = client.recv(
-                1024).decode()
+            self.actions[player_num][rounds_played] = client.recv(1024).decode()
             # Check if both agents have sent their actions
             while True:
                 if self.actions[0][rounds_played] is not None and self.actions[1][rounds_played] is not None:
@@ -70,11 +68,9 @@ class Server:
                     else:
                         util = -1.
                     if player_num == 0:
-                        print(
-                            f'It is round {rounds_played}. Player 0 played {a1} and player 1 played {a2}.')
+                        print(f'It is round {rounds_played}. Player 0 played {a1} and player 1 played {a2}.')
                         self.wins[winner] += 1
-                    client.send(
-                        f'{[self.actions[opp][rounds_played]]}, {util}'.encode())
+                    client.send(f'{[self.actions[opp][rounds_played]]}, {util}'.encode())
                     rounds_played += 1
                     break
         client.send('Game Over'.encode())
