@@ -17,4 +17,4 @@ class RandomAgent(Agent):
 
 
 agent = RandomAgent('Agent 1')
-agent.connect(ip='localhost', port=1234)
+agent.connect(ip='127.0.1.1', port=1234)

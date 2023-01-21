@@ -1,6 +1,7 @@
 from abc import ABC
 import time
 from server import Server
+import sys
 
 
 def determine_winner(action1, action2):
@@ -68,5 +69,11 @@ class RPSServer(Server, ABC):
             self.message[i] = 'Game Over'
 
 
-server = RPSServer(3, 1)
-server.start()
+if __name__ == "__main__":
+    if len(sys.argv) !=  3:
+        print('Please only enter the number of agents and number of rounds')
+        sys.exit()
+    n = int(sys.argv[1])
+    r = int(sys.argv[2])
+    server = RPSServer(n, r)
+    server.start()
