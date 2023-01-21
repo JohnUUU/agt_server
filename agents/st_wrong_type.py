@@ -1,20 +1,18 @@
-import random
 from agent import Agent
 
 
-class RandomAgent(Agent):
+class WMAgent(Agent):
     def __init__(self, name):
-        super(RandomAgent, self).__init__(name)
+        super(WMAgent, self).__init__(name)
         self.history = []
         self.actions = ['rock', 'paper', 'scissors']
 
     def get_action(self):
-        return random.choice(self.actions)
+        return -1
 
     def update(self, a_other, utility):
         return None
 
 
-agent = RandomAgent('Random Agent')
+agent = WMAgent('Wrong Move Agent')
 agent.connect()
-#agent.connect(ip='10.38.33.90', port=1234)

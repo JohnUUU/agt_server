@@ -14,6 +14,6 @@ class RockLovingAgent(Agent):
         return None
 
 
-agent = RockLovingAgent('Agent 1')
+agent = RockLovingAgent('Rock Loving Agent')
 agent.connect()
 #agent.connect(ip='10.38.33.90', port=1234)

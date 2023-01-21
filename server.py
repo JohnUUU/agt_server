@@ -21,15 +21,15 @@ class Server:
         self.wins = {i: 0 for i in range(n_players)}
         self.wins[3] = 0
         self.clients = defaultdict(lambda: None)
-        self.num_rounds = 5
+        self.num_rounds = 20
 
     def start(self):
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         hostname = socket.gethostname()
         IPAddr = socket.gethostbyname(hostname)
-        #server.bind(('localhost', 1234))
-        server.bind((IPAddr, 1234))
+        server.bind(('localhost', 1234))
+        #server.bind((IPAddr, 1234))
         print(f'The server is hosted at {IPAddr} and port 1234')
         server.listen()
         for i in range(self.n_players):
@@ -72,7 +72,7 @@ class Server:
                         util = -1.
                     if player_num == 0:
                         print(
-                            f'It is round {rounds_played}. Player 0 played {a1} and player 1 played {a2}.')
+                            f'It is round {rounds_played}. Player 0 played {a1} and Player 1 played {a2}.')
                         self.wins[winner] += 1
                     client.send(
                         f'{[self.actions[opp][rounds_played]]}, {util}'.encode())

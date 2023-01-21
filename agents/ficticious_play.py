@@ -42,6 +42,6 @@ class FicticiousPlayAgent(Agent):
         return best_move
 
 
-agent = FicticiousPlayAgent('Agent 1')
+agent = FicticiousPlayAgent('Ficticious Play')
 agent.connect()
 # agent.connect(ip='10.38.33.90', port=1234)

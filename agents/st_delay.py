@@ -1,20 +1,20 @@
-import random
 from agent import Agent
+import time
 
 
-class RandomAgent(Agent):
+class Thinker(Agent):
     def __init__(self, name):
-        super(RandomAgent, self).__init__(name)
+        super(Thinker, self).__init__(name)
         self.history = []
         self.actions = ['rock', 'paper', 'scissors']
 
     def get_action(self):
-        return random.choice(self.actions)
+        time.sleep(10000)
+        return 'rock'
 
     def update(self, a_other, utility):
         return None
 
 
-agent = RandomAgent('Random Agent')
+agent = Thinker('Thinking Agent')
 agent.connect()
-#agent.connect(ip='10.38.33.90', port=1234)
