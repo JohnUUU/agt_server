@@ -54,10 +54,8 @@ class Server:
             client.send(initial_message.encode())
             self.clients[i] = client
             # Start the thread
-            threading.Thread(target=self.handle_client,
-                             args=(client, i)).start()
-        print(
-            f'I have {self.n_players} agents connected and I am starting the game')
+            threading.Thread(target=self.handle_client, args=(client, i)).start()
+        print(f'I have {self.n_players} agents connected and I am starting the game')
         self.run_game()
 
     # def handle_client(self, client, player_num):
@@ -98,8 +96,7 @@ class Server:
         rounds_played = 0
         while self.in_progress:
             # Wait for the agent to send its action
-            self.actions[player_num][rounds_played] = client.recv(
-                1024).decode()
+            self.actions[player_num][rounds_played] = client.recv(1024).decode()
             rounds_played += 1
             while self.message[player_num] is None:
                 pass
