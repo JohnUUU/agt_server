@@ -1,6 +1,6 @@
 from abc import ABC
 import time
-from server import Server
+from servers.server import Server
 import sys
 
 
