@@ -9,11 +9,12 @@ class RandomAgent(Agent):
         self.history = []
 
     def get_action(self):
-        return random.choice(['rock', 'paper', 'scissors'])
+        action = random.choice(['rock', 'paper', 'scissors'])
+        return action
 
     def update(self, a_other, utility):
         return None
 
 
 agent = RandomAgent('Agent 1')
-agent.connect(ip='10.38.33.90', port=1234)
+agent.connect(ip='localhost', port=1234)
