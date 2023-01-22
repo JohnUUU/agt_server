@@ -1,7 +1,9 @@
 from abc import ABC
 import time
-from servers.server import Server
+from server import Server
 import sys
+import numpy as np
+import pandas as pd
 
 
 def determine_winner(action1, action2):
@@ -14,6 +16,15 @@ def determine_winner(action1, action2):
         return 1
 
 
+def get_utility(result):
+    if result == 0:
+        return [1, -1]
+    elif result == 1:
+        return [-1, 1]
+    else:
+        return [0, 0]
+
+
 class RPSServer(Server, ABC):
     def __init__(self, n_players, n_rounds=100):
         super(RPSServer, self).__init__(n_players)
@@ -21,6 +32,7 @@ class RPSServer(Server, ABC):
         self.played = {p: set([]) for p in range(self.n_players)}
         self.players = list(range(n_players))
         self.n_rounds = n_rounds
+        self.total_util = np.zeros([n_players, n_players])
 
     def get_initial_message(self):
         return 'RPS'
@@ -43,25 +55,22 @@ class RPSServer(Server, ABC):
         self.round_robin()
         matches = 0
         while self.pairings:
+            print(self.pairings)
+            print(f'I am playing round {matches}')
             for r in range(self.n_rounds):
+                print(r)
                 for match in self.pairings:
                     p0, p1 = match
                     a0 = self.actions[p0][r + matches*self.n_rounds]
                     a1 = self.actions[p1][r + matches*self.n_rounds]
                     result = determine_winner(a0, a1)
-                    print(f'In round {r}, {a0} and {a1} were played by {p0} and {p1} to yield {result}')
-                    if result == 0:
-                        u0 = 1
-                        u1 = -1
-                    if result == 1:
-                        u1 = 1
-                        u0 = -1
-                    if result == 3:
-                        u1 = 0
-                        u0 = 0
+                    # print(f'In round {r}, {a0} and {a1} were played by {p0} and {p1} to yield {result}')
+                    u0, u1 = get_utility(result)
                     self.message[p0] = f'{[a1]}, {u0}'
                     self.message[p1] = f'{[a0]}, {u1}'
-                    time.sleep(.1)
+                    time.sleep(.001)
+                    self.total_util[p0][p1] += u0
+                    self.total_util[p1][p0] += u1
             matches += 1
             self.round_robin()
         self.in_progress = False
@@ -70,10 +79,22 @@ class RPSServer(Server, ABC):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) !=  3:
+    if len(sys.argv) != 3:
         print('Please only enter the number of agents and number of rounds')
         sys.exit()
     n = int(sys.argv[1])
     r = int(sys.argv[2])
     server = RPSServer(n, r)
     server.start()
+    df = pd.DataFrame(server.total_util)
+    df.columns = server.agent_names
+    df.index = server.agent_names
+    means = []
+    wins = []
+    for d in server.total_util:
+        print(d)
+        means.append(sum(d) / (len(d) - 1))
+        wins.append(len(np.where(d > 0)[0]))
+    df['Mean Points'] = means
+    df['Number of Matches Won'] = wins
+    print(df)

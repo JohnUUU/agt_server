@@ -7,6 +7,6 @@ fi
 
 for i in $(seq 1 $1)
 do
-          bash -c "python random_agent.py" &
+          bash -c "python agents/random_agent.py Agent_$i" &
 done
 wait

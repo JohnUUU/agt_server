@@ -1,5 +1,6 @@
 import random
-from agents.agent import Agent
+from agent import Agent
+import sys
 
 
 class RandomAgent(Agent):
@@ -15,5 +16,10 @@ class RandomAgent(Agent):
         return None
 
 
-agent = RandomAgent('Agent 1')
-agent.connect(ip='127.0.1.1', port=1234)
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print('Please only enter the name of the agent')
+        sys.exit()
+
+    agent = RandomAgent(sys.argv[1])
+    agent.connect(ip='127.0.1.1', port=1234)
