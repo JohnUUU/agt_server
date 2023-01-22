@@ -7,10 +7,11 @@ class RandomAgent(Agent):
     def __init__(self, name):
         super(RandomAgent, self).__init__(name)
         self.history = []
+        self.actions = ['rock', 'paper', 'scissors']
 
     def get_action(self):
-        action = random.choice(['rock', 'paper', 'scissors'])
-        return action
+        return random.choice(self.actions)
+
 
     def update(self, a_other, utility):
         return None
