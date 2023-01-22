@@ -1,5 +1,6 @@
 import random
 from agent import Agent
+import sys
 
 
 class RandomAgent(Agent):
@@ -11,10 +12,15 @@ class RandomAgent(Agent):
     def get_action(self):
         return random.choice(self.actions)
 
+
     def update(self, a_other, utility):
         return None
 
 
-agent = RandomAgent('Random Agent')
-agent.connect()
-#agent.connect(ip='10.38.33.90', port=1234)
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print('Please only enter the name of the agent')
+        sys.exit()
+
+    agent = RandomAgent(sys.argv[1])
+    agent.connect(ip='127.0.1.1', port=1234)
