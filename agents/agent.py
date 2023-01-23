@@ -8,6 +8,14 @@ class Agent:
         self.client = None
         self.first_message = None
         self.player_num = None
+        self.first_game = True
+
+    def setup(self):
+        raise NotImplementedError
+
+    def restart(self):
+        self.first_game = False
+        self.setup()
 
     def connect(self, ip='localhost', port=1234):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -35,7 +43,8 @@ class Agent:
             if response == 'Game Over':
                 break
             elif response == 'New Game':
-                self.__init__(self.name)
+                print('I am restarting for a new game')
+                self.setup()
             else:
                 opp_action, util = response.strip().split(',')
                 opp_action = ast.literal_eval(opp_action)

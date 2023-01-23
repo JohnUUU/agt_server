@@ -55,10 +55,10 @@ class RPSServer(Server, ABC):
         self.round_robin()
         matches = 0
         while self.pairings:
-            print(self.pairings)
+            # print(self.pairings)
             print(f'I am playing round {matches}')
             for r in range(self.n_rounds):
-                print(r)
+                # print(r)
                 for match in self.pairings:
                     p0, p1 = match
                     a0 = self.actions[p0][r + matches*self.n_rounds]
@@ -72,6 +72,9 @@ class RPSServer(Server, ABC):
                     self.total_util[p0][p1] += u0
                     self.total_util[p1][p0] += u1
             matches += 1
+            for i in range(self.n_players):
+                self.message[i] = 'New Game'
+                time.sleep(.001)
             self.round_robin()
         self.in_progress = False
         for i in range(self.n_players):
@@ -92,7 +95,7 @@ if __name__ == "__main__":
     means = []
     wins = []
     for d in server.total_util:
-        print(d)
+        # print(d)
         means.append(sum(d) / (len(d) - 1))
         wins.append(len(np.where(d > 0)[0]))
     df['Mean Points'] = means
