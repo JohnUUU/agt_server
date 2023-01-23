@@ -71,4 +71,5 @@ class Server:
             client.send(self.message[player_num].encode())
             self.message[player_num] = None
         # client.send("Game Over".encode())
+        time.sleep(.2)
         client.close()

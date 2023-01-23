@@ -33,6 +33,7 @@ class RPSServer(Server, ABC):
         self.players = list(range(n_players))
         self.n_rounds = n_rounds
         self.total_util = np.zeros([n_players, n_players])
+        self.matches_played = {p: 0 for p in range(n_players)}
 
     def get_initial_message(self):
         return 'RPS'
@@ -55,23 +56,29 @@ class RPSServer(Server, ABC):
         self.round_robin()
         matches = 0
         while self.pairings:
+            print(f'Pairings are {self.pairings}')
             # print(self.pairings)
             print(f'I am playing round {matches}')
             for r in range(self.n_rounds):
                 # print(r)
                 for match in self.pairings:
                     p0, p1 = match
-                    a0 = self.actions[p0][r + matches*self.n_rounds]
-                    a1 = self.actions[p1][r + matches*self.n_rounds]
-                    result = determine_winner(a0, a1)
-                    # print(f'In round {r}, {a0} and {a1} were played by {p0} and {p1} to yield {result}')
-                    u0, u1 = get_utility(result)
-                    self.message[p0] = f'{[a1]}, {u0}'
-                    self.message[p1] = f'{[a0]}, {u1}'
-                    time.sleep(.001)
-                    self.total_util[p0][p1] += u0
-                    self.total_util[p1][p0] += u1
-            matches += 1
+                    if p1 is not None:
+                        a0 = self.actions[p0][r + self.matches_played[p0]*self.n_rounds]
+                        a1 = self.actions[p1][r + self.matches_played[p1]*self.n_rounds]
+                        result = determine_winner(a0, a1)
+                        # print(f'In round {r}, {a0} and {a1} were played by {p0} and {p1} to yield {result}')
+                        u0, u1 = get_utility(result)
+                        self.message[p0] = f'{[a1]}, {u0}'
+                        self.message[p1] = f'{[a0]}, {u1}'
+                        time.sleep(.001)
+                        self.total_util[p0][p1] += u0
+                        self.total_util[p1][p0] += u1
+            for match in self.pairings:
+                p0, p1 = match
+                if p1 is not None:
+                    self.matches_played[p0] += 1
+                    self.matches_played[p1] += 1
             for i in range(self.n_players):
                 self.message[i] = 'New Game'
                 time.sleep(.001)
@@ -100,4 +107,5 @@ if __name__ == "__main__":
         wins.append(len(np.where(d > 0)[0]))
     df['Mean Points'] = means
     df['Number of Matches Won'] = wins
+    df.to_csv('results.csv')
     print(df)

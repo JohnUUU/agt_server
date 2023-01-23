@@ -6,7 +6,7 @@ class ExponentialAgent(Agent):
     def __init__(self, name):
         super(ExponentialAgent, self).__init__(name)
         self.setup()
-        
+
     def setup(self):
         self.tot_utility = np.array([0.0, 0.0, 0.0])
         self.move_count = np.array([0, 0, 0])
