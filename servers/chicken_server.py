@@ -6,22 +6,14 @@ import numpy as np
 import pandas as pd
 
 
-def determine_winner(action1, action2):
-    if action1 == action2:
-        return 3
-    elif (action1 == 'rock' and action2 == 'scissors') or (action1 == 'paper' and action2 == 'rock') or (
-            action1 == 'scissors' and action2 == 'paper'):
-        return 0
-    else:
-        return 1
-
-
-def get_utility(result):
-    if result == 0:
-        return [1, -1]
-    elif result == 1:
+def get_utility(a0, a1):
+    if a0 == 'C' and a1 == 'C':
+        return [-5, -5]
+    if a0 == 'S' and a1 == 'C':
         return [-1, 1]
-    else:
+    if a0 == 'C' and a1 == 'S':
+        return [1, -1]
+    if a0 == 'S' and a1 == 'S':
         return [0, 0]
 
 
@@ -66,9 +58,8 @@ class RPSServer(Server, ABC):
                     if p1 is not None:
                         a0 = self.actions[p0][r + self.matches_played[p0]*self.n_rounds]
                         a1 = self.actions[p1][r + self.matches_played[p1]*self.n_rounds]
-                        result = determine_winner(a0, a1)
                         # print(f'In round {r}, {a0} and {a1} were played by {p0} and {p1} to yield {result}')
-                        u0, u1 = get_utility(result)
+                        u0, u1 = get_utility(a0, a1)
                         self.message[p0] = f'{[a1]}, {u0}'
                         self.message[p1] = f'{[a0]}, {u1}'
                         time.sleep(.001)

@@ -25,14 +25,13 @@ def get_utility(result):
         return [0, 0]
 
 
-class RPSServer(Server, ABC):
+class LemonadeServer(Server, ABC):
     def __init__(self, n_players, n_rounds=100):
         super(RPSServer, self).__init__(n_players)
         self.pairings = None
-        self.played = {p: set([]) for p in range(self.n_players)}
         self.players = list(range(n_players))
         self.n_rounds = n_rounds
-        self.total_util = np.zeros([n_players, n_players])
+        self.total_util = np.zeros(n_players)
         self.matches_played = {p: 0 for p in range(n_players)}
 
     def get_initial_message(self):

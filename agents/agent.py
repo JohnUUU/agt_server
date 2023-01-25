@@ -41,9 +41,9 @@ class Agent:
             self.client.send(action.encode())
             response = self.client.recv(1024).decode()
             if response == 'Game Over':
+                print(f'I am agent {self.player_num} and my game is over')
                 break
             elif response == 'New Game':
-                print('I am restarting for a new game')
                 self.setup()
             else:
                 opp_action, util = response.strip().split(',')
