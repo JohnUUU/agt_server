@@ -4,10 +4,6 @@ import sys
 
 
 class RandomAgent(Agent):
-    def __init__(self, name):
-        super(RandomAgent, self).__init__(name)
-        self.setup()
-
     def setup(self):
         self.history = []
         self.actions = ['rock', 'paper', 'scissors']
@@ -25,4 +21,4 @@ if __name__ == "__main__":
         sys.exit()
 
     agent = RandomAgent(sys.argv[1])
-    agent.connect(ip='10.38.33.90', port=1234)
+    agent.connect(ip='10.38.0.36', port=1234)

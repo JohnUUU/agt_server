@@ -1,9 +1,9 @@
 from agent import Agent
+import sys
 
 
 class WMAgent(Agent):
-    def __init__(self, name):
-        super(WMAgent, self).__init__(name)
+    def setup(self):
         self.history = []
         self.actions = ['rock', 'paper', 'scissors']
 
@@ -14,5 +14,13 @@ class WMAgent(Agent):
         return None
 
 
-agent = WMAgent('Wrong Move Agent')
-agent.connect()
+# agent = WMAgent('Wrong Move Agent')
+# agent.connect()
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print('Please only enter the name of the agent')
+        sys.exit()
+
+    agent = WMAgent(sys.argv[1])
+    agent.connect(ip='10.38.0.36', port=1234)
