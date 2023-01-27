@@ -1,9 +1,9 @@
 from agent import Agent
+import sys
 
 
 class RockLovingAgent(Agent):
-    def __init__(self, name):
-        super(RockLovingAgent, self).__init__(name)
+    def setup(self):
         self.history = []
         self.actions = ['rock', 'paper', 'scissors']
 
@@ -14,6 +14,14 @@ class RockLovingAgent(Agent):
         return None
 
 
-agent = RockLovingAgent('Rock Loving Agent')
-agent.connect()
-#agent.connect(ip='10.38.33.90', port=1234)
+# agent = RockLovingAgent('Rock Loving Agent')
+# agent.connect()
+# #agent.connect(ip='10.38.33.90', port=1234)
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print('Please only enter the name of the agent')
+        sys.exit()
+
+    agent = RockLovingAgent(sys.argv[1])
+    agent.connect(ip='10.38.0.36', port=1234)

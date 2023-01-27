@@ -34,13 +34,7 @@ class FicticiousPlayAgent(Agent):
         Uses the opponent’s previous moves (self.opp_action_history) to generate and save a probability distribution 
         over the opponent’s next move in (self.dist).
         """
-        dist = np.array([0, 0, 0])
-        for action in self.opp_action_history:
-            dist[action] += 1
-        total = np.sum(dist)
-        if total > 0:
-            dist = dist / total
-        return dist
+        raise NotImplementedError
 
     def optimize(self, dist):
         """
@@ -48,11 +42,7 @@ class FicticiousPlayAgent(Agent):
         Return the best move according to Ficticious Play. 
         Please return one of [self.ROCK, self.PAPER, self.SCISSORS]
         """
-        payoffs = np.array([0, 0, 0])
-        for action in range(len(payoffs)):
-            payoffs[action] += np.sum(dist * self.utility[action])
-        best_move = np.argmax(payoffs)
-        return best_move
+        raise NotImplementedError
 
 
 # agent = FicticiousPlayAgent('Ficticious Play')
