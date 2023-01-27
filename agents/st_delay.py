@@ -1,10 +1,10 @@
 from agent import Agent
 import time
+import sys
 
 
 class Thinker(Agent):
-    def __init__(self, name):
-        super(Thinker, self).__init__(name)
+    def setup(self):
         self.history = []
         self.actions = ['rock', 'paper', 'scissors']
 
@@ -16,5 +16,13 @@ class Thinker(Agent):
         return None
 
 
-agent = Thinker('Thinking Agent')
-agent.connect()
+# agent = Thinker('Thinking Agent')
+# agent.connect()
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print('Please only enter the name of the agent')
+        sys.exit()
+
+    agent = Thinker(sys.argv[1])
+    agent.connect(ip='10.38.0.36', port=1234)

@@ -9,9 +9,7 @@ class ExponentialAgent(Agent):
         self.setup()
 
     def setup(self):
-        self.tot_utility = np.array([0.0, 0.0, 0.0])
-        self.move_count = np.array([0, 0, 0])
-        self.my_move = None
+        self.my_moves = np.array([])
 
         # ACTIONS
         self.ROCK, self.PAPER, self.SCISSOR = 0, 1, 2
@@ -26,22 +24,31 @@ class ExponentialAgent(Agent):
         return np.exp(x)/np.sum(np.exp(x))
 
     def get_action(self):
-        self.my_move = self.find_best_move()
-        return self.my_move
+        my_move = self.calcMoveProbabilities()
+        np.append(self.my_moves, my_move)
+        return my_move
 
     def update(self, a_other, utility):
+        """
+        HINT: Update your move history and utility history to help find your best move in calcMoveProbabilities
+        """
         move_decode = {'rock': 0, 'paper': 1, 'scissors': 2}
-        self.tot_utility[move_decode[self.my_move]] += float(utility)
-        self.move_count[move_decode[self.my_move]] += 1
+        raise NotImplementedError
 
-    def find_best_move(self):
-        avg_utility = self.tot_utility / \
-            np.maximum(np.ones(3), self.move_count)
-        return np.random.choice(self.actions, p=self.softmax(avg_utility))
+    def calcMoveProbabilities(self):
+        """
+         Uses your historical average rewards to generate a probability distribution over your next move using 
+         the Exponential Weights strategy
 
+         HINT: np.random.choice might be useful
+
+         Please return your best move (one of [self.ROCK, self.PAPER, self.SCISSOR])
+        """
+        raise NotImplementedError
 
 # agent = ExponentialAgent('Exponential Agent')
 # agent.connect()
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:

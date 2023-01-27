@@ -9,6 +9,7 @@ class Agent:
         self.first_message = None
         self.player_num = None
         self.first_game = True
+        self.setup()
 
     def setup(self):
         raise NotImplementedError
