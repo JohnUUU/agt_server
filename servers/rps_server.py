@@ -108,6 +108,6 @@ if __name__ == "__main__":
         wins.append(len(np.where(d > 0)[0]))
     df['Mean Points'] = means
     df['Number of Matches Won'] = wins
-    df.sort_values('Mean Points')
+    df = df.sort_values('Mean Points', ascending=False)
     df.to_csv('results.csv')
     print(df)
