@@ -1,14 +1,15 @@
 import numpy as np
 from agent import Agent
+from ta_agent import TAAgent
+from utils import determine_winner
 import sys
 
 
-class FicticiousPlayAgent(Agent):
+class FictitiousPlayAgent(Agent):
     def setup(self):
         self.opp_action_history = []
 
         # ACTIONS
-        self.ROCK, self.PAPER, self.SCISSOR = 0, 1, 2
         self.actions = ['rock', 'paper', 'scissors']
 
         # NOTE: Changing this will only change your perception of the utility and will not
@@ -34,25 +35,34 @@ class FicticiousPlayAgent(Agent):
         Uses the opponent’s previous moves (self.opp_action_history) to generate and save a probability distribution 
         over the opponent’s next move in (self.dist).
         """
+        # TODO Write this
         raise NotImplementedError
 
     def optimize(self, dist):
         """
         Given the distribution over the opponent's next move (output of predict) and knowledge of the payoffs (self.utility),
         Return the best move according to Ficticious Play. 
-        Please return one of [self.ROCK, self.PAPER, self.SCISSORS]
+        Please return one of ['rock', 'paper', 'scissors']
         """
+        # TODO Write this
         raise NotImplementedError
 
 
-# agent = FicticiousPlayAgent('Ficticious Play')
-# # agent.connect()
-# agent.connect(ip='10.38.33.90', port=1234)
-
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print('Please only enter the name of the agent')
-        sys.exit()
-
-    agent = FicticiousPlayAgent(sys.argv[1])
-    agent.connect(ip='10.38.0.36', port=1234)
+    agent = FictitiousPlayAgent('My Agent')
+    opponent = TAAgent('TAAgent')
+    score = 0
+    for _ in range(1000):
+        my_action = agent.get_action()
+        opponent_action = opponent.get_action()
+        result = determine_winner(my_action, opponent_action)
+        if result == 0:
+            util = 1
+            score += 1
+        elif result == 1:
+            util = -1
+            score -= 1
+        else:
+            util = 0
+        agent.update(opponent_action, util)
+    print(f'After 1000 rounds, my score is {score}')
