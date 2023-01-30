@@ -45,7 +45,7 @@ class ExponentialAgent(Agent):
 
          HINT: np.random.choice might be useful
 
-         Please return an array of ['rock', 'paper', 'scissors']
+         Please return an array of [P('rock'), P('paper'), P('scissors')]
         """
         # TODO Write this
         raise NotImplementedError
