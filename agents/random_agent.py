@@ -21,4 +21,4 @@ if __name__ == "__main__":
         sys.exit()
 
     agent = RandomAgent(sys.argv[1])
-    agent.connect(ip='10.38.0.36', port=1234)
+    agent.connect(ip='127.0.1.1', port=1234)

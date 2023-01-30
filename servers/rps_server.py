@@ -56,6 +56,7 @@ class RPSServer(Server, ABC):
         self.round_robin()
         matches = 0
         while self.pairings:
+            matches += 1
             print(f'Pairings are {self.pairings}')
             # print(self.pairings)
             print(f'I am playing round {matches}')
@@ -107,5 +108,6 @@ if __name__ == "__main__":
         wins.append(len(np.where(d > 0)[0]))
     df['Mean Points'] = means
     df['Number of Matches Won'] = wins
+    df = df.sort_values('Mean Points', ascending=False)
     df.to_csv('results.csv')
     print(df)
