@@ -15,3 +15,7 @@ def get_utility(result):
         return [-1, 1]
     else:
         return [0, 0]
+
+
+# Legal actions for the game
+actions = ['rock', 'paper', 'scissors']

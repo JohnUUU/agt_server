@@ -1,8 +1,7 @@
-import random
 import numpy as np
 from agent import Agent
 from ta_agent import TAAgent
-from utils import determine_winner
+from game import *
 import sys
 
 
@@ -12,13 +11,12 @@ class ExponentialAgent(Agent):
         self.setup()
 
     def setup(self):
-        self.tot_utility = np.array([0.0, 0.0, 0.0])
-        self.move_count = np.array([0, 0, 0])
-        self.my_move = None
+        self.my_utils = np.zeros(len(actions))
+        self.my_moves = np.array([])
 
         # ACTIONS
-        self.ROCK, self.PAPER, self.SCISSOR = 0, 1, 2
-        self.actions = ['rock', 'paper', 'scissors']
+        self.actions = actions
+        self.opp_action_history = []
 
         # NOTE: Changing this will only change your agent's perception of the utility and
         #       will not change the actual utility used in the game
@@ -29,22 +27,33 @@ class ExponentialAgent(Agent):
         return np.exp(x)/np.sum(np.exp(x))
 
     def get_action(self):
-        self.my_move = self.find_best_move()
-        return self.my_move
+        move_p = self.calc_move_probs()
+        my_move = np.random.choice(['rock', 'paper', 'scissors'], p=move_p)
+        self.my_moves = np.append(self.my_moves, my_move)
+        return my_move
 
     def update(self, a_other, utility):
+        """
+        HINT: Update your move history and utility history to help find your best move in calc_move_probs
+        """
+        a_other = a_other[0]
         move_decode = {'rock': 0, 'paper': 1, 'scissors': 2}
-        self.tot_utility[move_decode[self.my_move]] += float(utility)
-        self.move_count[move_decode[self.my_move]] += 1
+        self.opp_action_history.append(move_decode[a_other])
+        self.my_utils[move_decode[self.my_moves[-1]]] += utility
 
-    def find_best_move(self):
-        avg_utility = self.tot_utility / \
-            np.maximum(np.ones(3), self.move_count)
-        return np.random.choice(self.actions, p=self.softmax(avg_utility))
+    def calc_move_probs(self):
+        """
+         Uses your historical average rewards to generate a probability distribution over your next move using
+         the Exponential Weights strategy
 
+         Please return an array of [P('rock'), P('paper'), P('scissors')]
+        """
+        # TODO Calculate the average reward for each action over time and return the softmax of it
+        average_util = np.zeros(len(self.actions))
+        for i, a in enumerate(actions):
+            average_util[i] = self.my_utils[i]
+        return self.softmax(average_util)
 
-# agent = ExponentialAgent('Exponential Agent')
-# agent.connect()
 
 if __name__ == "__main__":
     agent = ExponentialAgent('My Agent')
@@ -54,13 +63,7 @@ if __name__ == "__main__":
         my_action = agent.get_action()
         opponent_action = opponent.get_action()
         result = determine_winner(my_action, opponent_action)
-        if result == 0:
-            util = 1
-            score += 1
-        elif result == 1:
-            util = -1
-            score -= 1
-        else:
-            util = 0
+        util = get_utility(result)[0]
+        score += util
         agent.update([opponent_action], util)
     print(f'After 1000 rounds, my score is {score}')
