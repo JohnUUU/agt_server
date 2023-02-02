@@ -2,31 +2,27 @@ import random
 from agent import Agent
 import sys
 from ta_agent import TAAgent
-from utils import determine_winner
+from game import *
 
 
 class CompAgent(Agent):
     def setup(self):
-        # TODO If you use any new objects in the class for update and get_action, please initialize them here
         self.history = []
-        self.actions = ['rock', 'paper', 'scissors']
+        self.actions = actions
 
     def get_action(self):
-        # TODO return what action to play next from self.actions
-        raise NotImplementedError
+        return random.choice(self.actions)
 
     def update(self, a_other, utility):
-        # TODO Choose how to use the information you get from the simulator to make your next move
-        # a_other is a list of length 1 containing the opponent's action
-        raise NotImplementedError
+        return None
 
 
 if __name__ == "__main__":
     # TODO Edit this to match the IP given by the TAs and name your agent for the leaderboard
-    ip = '10.38.0.36'
+    ip = '10.38.61.72'
     port = 1234
     name = "MyAgentName"
-    test = True
+    test = False
 
     if not test:
         agent = CompAgent(name)
@@ -39,13 +35,7 @@ if __name__ == "__main__":
             my_action = agent.get_action()
             opponent_action = opponent.get_action()
             result = determine_winner(my_action, opponent_action)
-            if result == 0:
-                util = 1
-                score += 1
-            elif result == 1:
-                util = -1
-                score -= 1
-            else:
-                util = 0
+            util = get_utility(result)[0]
+            score += util
             agent.update([opponent_action], util)
         print(f'After 1000 rounds, my score is {score}')
