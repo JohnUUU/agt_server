@@ -1,8 +1,7 @@
 import numpy as np
 from agent import Agent
 from ta_agent import TAAgent
-from game import *
-import sys
+from rps_game import *
 
 
 class FictitiousPlayAgent(Agent):
@@ -35,13 +34,12 @@ class FictitiousPlayAgent(Agent):
         Uses the opponent’s previous moves (self.opp_action_history) to generate and save a probability distribution
         over the opponent’s next move in (self.dist).
         """
-        # TODO Complete the stencil
         dist = np.zeros(len(self.actions))
         for a in self.opp_action_history:
-            pass
+            dist[a] += 1
         if sum(dist) == 0:
             return np.ones(len(self.actions))/len(self.actions)
-        return NotImplementedError
+        return dist/sum(dist)
 
     def optimize(self, dist):
         """
@@ -54,7 +52,7 @@ class FictitiousPlayAgent(Agent):
         for i, a in enumerate(self.actions):
             # Calculate the payoff
             for j, a in enumerate(self.actions):
-                action_utils[i] +=
+                action_utils[i] += dist[j]*self.utility[i][j]
 
         best_action = np.argmax(action_utils)
         return best_action

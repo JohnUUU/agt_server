@@ -23,4 +23,4 @@ if __name__ == "__main__":
         sys.exit()
 
     agent = WMAgent(sys.argv[1])
-    agent.connect(ip='10.38.0.36', port=1234)
+    agent.connect(ip='10.38.57.32', port=1234)

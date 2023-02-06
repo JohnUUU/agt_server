@@ -1,8 +1,7 @@
 import numpy as np
 from agent import Agent
 from ta_agent import TAAgent
-from game import *
-import sys
+from rps_game import *
 
 
 class ExponentialAgent(Agent):
@@ -51,8 +50,8 @@ class ExponentialAgent(Agent):
         # TODO Calculate the average reward for each action over time and return the softmax of it
         average_util = np.zeros(len(self.actions))
         for i, a in enumerate(actions):
-            average_util[i] =
-        return NotImplementedError
+            average_util[i] = self.my_utils[i]
+        return self.softmax(average_util)
 
 
 if __name__ == "__main__":

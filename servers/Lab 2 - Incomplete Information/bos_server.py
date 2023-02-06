@@ -7,19 +7,23 @@ import pandas as pd
 
 
 def get_utility(a0, a1):
-    if a0 == 'C' and a1 == 'C':
-        return [-5, -5]
-    if a0 == 'S' and a1 == 'C':
-        return [-1, 1]
-    if a0 == 'C' and a1 == 'S':
-        return [1, -1]
     if a0 == 'S' and a1 == 'S':
         return [0, 0]
+    if a0 == 'S' and a1 == 'C':
+        return [7, 3]
+    if a0 == 'C' and a1 == 'S':
+        return [3, 7]
+    if a0 == 'C' and a1 == 'C':
+        return [0, 0]
+    if a0 in ['C', 'S']: 
+        return [7, 0]
+    else: 
+        return [0, 7]
 
 
-class RPSServer(Server, ABC):
+class BoSServer(Server, ABC):
     def __init__(self, n_players, n_rounds=100):
-        super(RPSServer, self).__init__(n_players)
+        super(BoSServer, self).__init__(n_players)
         self.pairings = None
         self.played = {p: set([]) for p in range(self.n_players)}
         self.players = list(range(n_players))
@@ -28,7 +32,7 @@ class RPSServer(Server, ABC):
         self.matches_played = {p: 0 for p in range(n_players)}
 
     def get_initial_message(self):
-        return 'RPS'
+        return 'Battle of the Sexes'
 
     def round_robin(self):
         active_players = set([])
@@ -56,8 +60,10 @@ class RPSServer(Server, ABC):
                 for match in self.pairings:
                     p0, p1 = match
                     if p1 is not None:
-                        a0 = self.actions[p0][r + self.matches_played[p0]*self.n_rounds]
-                        a1 = self.actions[p1][r + self.matches_played[p1]*self.n_rounds]
+                        a0 = self.actions[p0][r +
+                                              self.matches_played[p0]*self.n_rounds]
+                        a1 = self.actions[p1][r +
+                                              self.matches_played[p1]*self.n_rounds]
                         # print(f'In round {r}, {a0} and {a1} were played by {p0} and {p1} to yield {result}')
                         u0, u1 = get_utility(a0, a1)
                         self.message[p0] = f'{[a1]}, {u0}'
@@ -85,7 +91,7 @@ if __name__ == "__main__":
         sys.exit()
     n = int(sys.argv[1])
     r = int(sys.argv[2])
-    server = RPSServer(n, r)
+    server = BoSServer(n, r)
     server.start()
     df = pd.DataFrame(server.total_util)
     df.columns = server.agent_names

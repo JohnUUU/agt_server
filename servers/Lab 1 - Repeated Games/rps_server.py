@@ -7,6 +7,14 @@ import pandas as pd
 
 
 def determine_winner(action1, action2):
+    actions = ['rock', 'paper', 'scissors']
+    print(action1, action2)
+    if (action1 not in actions) and (action2 not in actions):
+        return 3
+    elif (action1 not in actions):
+        return 1
+    elif (action2 not in actions):
+        return 2
     if action1 == action2:
         return 3
     elif (action1 == 'rock' and action2 == 'scissors') or (action1 == 'paper' and action2 == 'rock') or (
@@ -65,8 +73,10 @@ class RPSServer(Server, ABC):
                 for match in self.pairings:
                     p0, p1 = match
                     if p1 is not None:
-                        a0 = self.actions[p0][r + self.matches_played[p0]*self.n_rounds]
-                        a1 = self.actions[p1][r + self.matches_played[p1]*self.n_rounds]
+                        a0 = self.actions[p0][r +
+                                              self.matches_played[p0]*self.n_rounds]
+                        a1 = self.actions[p1][r +
+                                              self.matches_played[p1]*self.n_rounds]
                         result = determine_winner(a0, a1)
                         # print(f'In round {r}, {a0} and {a1} were played by {p0} and {p1} to yield {result}')
                         u0, u1 = get_utility(result)

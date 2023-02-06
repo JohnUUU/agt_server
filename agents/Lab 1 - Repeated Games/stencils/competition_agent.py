@@ -1,8 +1,7 @@
 import random
 from agent import Agent
-import sys
 from ta_agent import TAAgent
-from game import *
+from rps_game import *
 
 
 class CompAgent(Agent):

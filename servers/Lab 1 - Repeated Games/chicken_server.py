@@ -6,36 +6,29 @@ import numpy as np
 import pandas as pd
 
 
-def determine_winner(action1, action2):
-    if action1 == action2:
-        return 3
-    elif (action1 == 'rock' and action2 == 'scissors') or (action1 == 'paper' and action2 == 'rock') or (
-            action1 == 'scissors' and action2 == 'paper'):
-        return 0
-    else:
-        return 1
-
-
-def get_utility(result):
-    if result == 0:
-        return [1, -1]
-    elif result == 1:
+def get_utility(a0, a1):
+    if a0 == 'C' and a1 == 'C':
+        return [-5, -5]
+    if a0 == 'S' and a1 == 'C':
         return [-1, 1]
-    else:
+    if a0 == 'C' and a1 == 'S':
+        return [1, -1]
+    if a0 == 'S' and a1 == 'S':
         return [0, 0]
 
 
-class LemonadeServer(Server, ABC):
+class ChickenServer(Server, ABC):
     def __init__(self, n_players, n_rounds=100):
-        super(LemonadeServer, self).__init__(n_players)
+        super(ChickenServer, self).__init__(n_players)
         self.pairings = None
+        self.played = {p: set([]) for p in range(self.n_players)}
         self.players = list(range(n_players))
         self.n_rounds = n_rounds
-        self.total_util = np.zeros(n_players)
+        self.total_util = np.zeros([n_players, n_players])
         self.matches_played = {p: 0 for p in range(n_players)}
 
     def get_initial_message(self):
-        return 'RPS'
+        return 'Chicken'
 
     def round_robin(self):
         active_players = set([])
@@ -67,9 +60,8 @@ class LemonadeServer(Server, ABC):
                                               self.matches_played[p0]*self.n_rounds]
                         a1 = self.actions[p1][r +
                                               self.matches_played[p1]*self.n_rounds]
-                        result = determine_winner(a0, a1)
                         # print(f'In round {r}, {a0} and {a1} were played by {p0} and {p1} to yield {result}')
-                        u0, u1 = get_utility(result)
+                        u0, u1 = get_utility(a0, a1)
                         self.message[p0] = f'{[a1]}, {u0}'
                         self.message[p1] = f'{[a0]}, {u1}'
                         time.sleep(.001)
@@ -95,7 +87,7 @@ if __name__ == "__main__":
         sys.exit()
     n = int(sys.argv[1])
     r = int(sys.argv[2])
-    server = LemonadeServer(n, r)
+    server = ChickenServer(n, r)
     server.start()
     df = pd.DataFrame(server.total_util)
     df.columns = server.agent_names

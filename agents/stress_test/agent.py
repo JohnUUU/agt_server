@@ -39,7 +39,7 @@ class Agent:
         while True:
             action = self.get_action()
             print(f'I played {action}')
-            self.client.sendall(action.encode())
+            self.client.send(action.encode())
             response = self.client.recv(1024).decode()
             if response == 'Game Over':
                 print(f'I am agent {self.player_num} and my game is over')
